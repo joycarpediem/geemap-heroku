@@ -1,6 +1,8 @@
 import os
 import platform
+import json
 from subprocess import DEVNULL, STDOUT, check_call
+
 
 def set_heroku_vars(token_name='EARTHENGINE_TOKEN'):
     """Extracts Earth Engine token from the local computer and sets it as an environment variable on heroku.
@@ -18,12 +20,14 @@ def set_heroku_vars(token_name='EARTHENGINE_TOKEN'):
         else:
             with open(ee_token_file) as f:
                 content = f.read()
-                token = content.split(':')[1].strip()[1:-2]
+                # token = content.split(':')[1].strip()[1:-2]
+                token=json.loads(content)["refresh_token"]
+                # print(token)
                 # if platform.system() == 'Linux':
                 #     token = content.split(':')[1][1:-3]
                 # else:
                 #     token = content.split(':')[1][2:-2]
-                token='1//09ZnuYaO5r2JpCgYIARAAGAkSNwF-L9IrWT_dkRcMHtjj3w30WUASvDL5zDguhSwpgMZXa1F90E97zQh_vAugG8f6TpGsg-idVS0'
+        
                 secret = '{}={}'.format(token_name, token)
                 if platform.system() == 'Windows':
                     check_call(['heroku', 'config:set', secret], stdout=DEVNULL, stderr=STDOUT, shell=True)
