@@ -1,4 +1,5 @@
 voila
+earthengine-api
 geemap
 leafmap
 Jinja2==3.0.3
